@@ -51,11 +51,11 @@ $user = array(
     'lastName' => '',
 );
 
-$validator = new Validator();
+$validator = new UserValidator();
 $validator->isValid($user); // false
 
 $validator->getErrors()->toArray();
-// array('lastName' => 'last name cannot be empty')
+// array('lastName' => array('last name cannot be empty'))
 
 $user['lastName'] = 'Doe';
 
