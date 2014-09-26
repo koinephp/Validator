@@ -22,6 +22,8 @@ Package information:
 
 ### Usage
 
+In order to create a validator, extend the ```executeValidation``` method:
+
 ```php
 class UserValidator extends Validator
 {
@@ -31,15 +33,15 @@ class UserValidator extends Validator
     protected function executeValidation($value)
     {
         if (!isset($value['name'])) {
-            $this->errors->add('name', 'you must set name');
+            $this->getErrors()->add('name', 'you must set name');
         } elseif (!$value['name']) {
-            $this->errors->add('name', 'name cannot be empty');
+            $this->getErrors()->add('name', 'name cannot be empty');
         }
 
         if (!isset($value['lastName'])) {
-            $this->errors->add('lastName', 'you must set last name');
+            $this->getErrors()->add('lastName', 'you must set last name');
         } elseif (!$value['lastName']) {
-            $this->errors->add('lastName', 'last name cannot be empty');
+            $this->getErrors()->add('lastName', 'last name cannot be empty');
         }
     }
 }
@@ -58,6 +60,37 @@ $validator->getErrors()->toArray();
 $user['lastName'] = 'Doe';
 
 $validator->isValid($user); // true
+```
+
+If you also want to validate type of value, you can delegate validation to a typed method:
+
+```php
+class UserValidator extends Validator
+{
+    /**
+     * {@inheritdocs}
+     */
+    protected function executeValidation($value)
+    {
+        $this->validateUser($value);
+    }
+
+    private function validateUser(array $user)
+    {
+        if (!isset($user['name'])) {
+            $this->getErrors()->add('name', 'you must set name');
+        } elseif (!$user['name']) {
+            $this->getErrors()->add('name', 'name cannot be empty');
+        }
+
+        if (!isset($user['lastName'])) {
+            $this->getErrors()->add('lastName', 'you must set last name');
+        } elseif (!$user['lastName']) {
+            $this->getErrors()->add('lastName', 'last name cannot be empty');
+        }
+    }
+}
+
 ```
 
 ### Installing
