@@ -23,6 +23,41 @@ Package information:
 ### Usage
 
 ```php
+class UserValidator extends Validator
+{
+    /**
+     * {@inheritdocs}
+     */
+    protected function executeValidation($value)
+    {
+        if (!isset($value['name'])) {
+            $this->errors->add('name', 'you must set name');
+        } elseif (!$value['name']) {
+            $this->errors->add('name', 'name cannot be empty');
+        }
+
+        if (!isset($value['lastName'])) {
+            $this->errors->add('lastName', 'you must set last name');
+        } elseif (!$value['lastName']) {
+            $this->errors->add('lastName', 'last name cannot be empty');
+        }
+    }
+}
+
+$user = array(
+    'name'     => 'Jon',
+    'lastName' => '',
+);
+
+$validator = new Validator();
+$validator->isValid($user); // false
+
+$validator->getErrors()->toArray();
+// array('lastName' => 'last name cannot be empty')
+
+$user['lastName'] = 'Doe';
+
+$validator->isValid($user); // true
 ```
 
 ### Installing
