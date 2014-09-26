@@ -10,19 +10,6 @@ use Koine\Hash;
 class ErrorCollection extends Hash
 {
     /**
-     * Empties the collection
-     * @return self
-     */
-    public function clear()
-    {
-        foreach ($this->toArray() as $key => $value) {
-            $this->delete($key);
-        }
-
-        return $this;
-    }
-
-    /**
      * Add an error to the collection
      * @param  string $field
      * @param  string $message
